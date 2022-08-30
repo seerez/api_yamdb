@@ -33,7 +33,7 @@ class TitlesSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'year',
-#            'rating',
+            'rating',
             'description',
             'genre',
             'category'
@@ -61,7 +61,6 @@ class TitlesSerializerMethod(serializers.ModelSerializer):
             'id',
             'name',
             'year',
-#            'rating',
             'description',
             'genre',
             'category'
