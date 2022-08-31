@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     validate_slug)
 from django.db import models
@@ -77,7 +76,8 @@ class Title(models.Model):
 class Review(models.Model):
     title = models.ForeignKey(
         Title,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=False
     )
     text = models.TextField(
         help_text='Введите текст поста'
@@ -86,7 +86,8 @@ class Review(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='review',
-        verbose_name='Автор'
+        verbose_name='Автор',
+        null=False
     )
     pub_date = models.DateTimeField(
         auto_now_add=True
@@ -95,7 +96,8 @@ class Review(models.Model):
         validators=[
             MinValueValidator(1, 'Не меньше 1'),
             MaxValueValidator(10, 'Не больше 10')
-        ]
+        ],
+        null=False
     )
 
     class Meta:
@@ -106,19 +108,27 @@ class Review(models.Model):
 
 
 class Comments(models.Model):
+    title = models.ForeignKey(
+        Title,
+        on_delete=models.CASCADE,
+        null=False
+    )
     review = models.ForeignKey(
         Review,
         related_name='comments',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=False
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Автор'
+        verbose_name='Автор',
+        null=False
     )
     text = models.TextField(
-        help_text='Введите текст комментария'
+        help_text='Введите текст комментария',
+        null=False
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,

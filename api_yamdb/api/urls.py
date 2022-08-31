@@ -18,6 +18,11 @@ v1_router.register(
     CommentViewSet,
     basename='comments'
 )
+v1_router.register(
+    r'^titles/(?P<title_id>\d+)/reviews',
+    ReviewViewSet
+)
+
 v1_router.register(r'users', UserViewSet, basename='users')
 v1_router.register('genres', GenreViewSet, basename='genres')
 v1_router.register('categories', CategoryViewSet, basename='categories')
