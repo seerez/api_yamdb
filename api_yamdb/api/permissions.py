@@ -7,18 +7,6 @@ class IsAuthorOrReadOnly(BasePermission):
         return obj.author == request.user or request.method in SAFE_METHODS
 
 
-class AdminAllPermission(BasePermission):
-    """
-    Кастомный пермишн для работы администратора c небезопасными методами.
-    """
-
-    def has_permission(self, request, view):
-        """Переопределяем стандартный метод has_permission."""
-        if request.method in SAFE_METHODS:
-            return True
-        return bool(request.user.is_superuser or request.user.is_admin)
-
-
 class AdminOrSuperuserOnly(BasePermission):
     def has_permission(self, request, view):
         return request.user.role == 'admin' or request.user.is_superuser
