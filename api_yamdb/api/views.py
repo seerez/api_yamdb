@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
@@ -13,13 +12,13 @@ from rest_framework.response import Response
 from reviews.models import Category, Genre, Review, Title
 
 from .pagination import CategoryPagination, GenrePagination, TitlesPagination
-from .permissions import AdminOrSuperuserOnly, IsAuthorOrReadOnly
+from .permissions import *
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .serializers import (CategorySerializer, CommentsSerializerMethod,
                           GenreSerializer, ReviewSerializer, TitlesSerializer,
                           TitlesSerializerMethod, TokenCreateSerializer,
                           UserSerializer, UserSignUpSerializer)
-
-User = get_user_model()
+from users.models import User
 
 
 class UserSignUpViewSet(views.APIView):
@@ -121,9 +120,8 @@ class CategoryViewSet(ListCreateDestroyModelViewSet):
 
 class TitlesViewSet(viewsets.ModelViewSet):
     """Вьюсет для Title."""
-    #queryset = (Title.objects.all())
     queryset = Title.objects.annotate(rating=Avg('review__score')).all()
-    # permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
+    #permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
     pagination_class = TitlesPagination
     filter_backends = (filters.SearchFilter,)
 
