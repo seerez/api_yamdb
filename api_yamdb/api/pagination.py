@@ -11,4 +11,3 @@ class GenrePagination(PageNumberPagination):
 
 class TitlesPagination(PageNumberPagination):
     page_size = 5
-

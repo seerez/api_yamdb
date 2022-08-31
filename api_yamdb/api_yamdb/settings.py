@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -23,7 +22,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'reviews.apps.ReviewsConfig',
     'api.apps.ApiConfig',
-    'users.apps.ApiConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,5 +116,3 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'users.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-

@@ -1,20 +1,23 @@
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
+from rest_framework import (filters, mixins, permissions, status, views,
+                            viewsets)
 from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from django.db.models import Avg
-from rest_framework import viewsets, filters, mixins, permissions, views, status,
-from reviews.models import Category, Genre, Title, Review
-from .serializers import TitlesSerializerMethod, TitlesSerializer, CategorySerializer, GenreSerializer, CommentSerializer, ReviewSerializer, UserSerializer,
-    UserSignUpSerializer,
-    TokenCreateSerializer
-from .pagination import CategoryPagination, GenrePagination, TitlesPagination
-from django.shortcuts import get_object_or_404
-from rest_framework.pagination import LimitOffsetPagination
-from .permissions import IsAuthorOrReadOnly, AdminOrSuperuserOnly
 
+from reviews.models import Category, Genre, Review, Title
+
+from .pagination import CategoryPagination, GenrePagination, TitlesPagination
+from .permissions import AdminOrSuperuserOnly, IsAuthorOrReadOnly
+from .serializers import (CategorySerializer, CommentsSerializerMethod,
+                          GenreSerializer, ReviewSerializer, TitlesSerializer,
+                          TitlesSerializerMethod, TokenCreateSerializer,
+                          UserSerializer, UserSignUpSerializer)
 
 User = get_user_model()
 
@@ -98,7 +101,7 @@ class GenreViewSet(ListCreateDestroyModelViewSet):
     """Вьюсет для Genre."""
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    #permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
+    # permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
     pagination_class = GenrePagination
     lookup_field = 'slug'
     filter_backends = (filters.SearchFilter,)
@@ -109,7 +112,7 @@ class CategoryViewSet(ListCreateDestroyModelViewSet):
     """Вьюсет для Category."""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    #permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
+    # permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
     pagination_class = CategoryPagination
     search_fields = ('^name',)
     lookup_field = 'slug'
@@ -120,7 +123,7 @@ class TitlesViewSet(viewsets.ModelViewSet):
     """Вьюсет для Title."""
     queryset = (Title.objects.all())
     queryset = Title.objects.annotate(rating=Avg('reviews__score')).all()
-    #permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
+    # permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
     pagination_class = TitlesPagination
     filter_backends = (filters.SearchFilter,)
 
@@ -149,7 +152,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """Вьюсет для комментариев"""
-    serializer_class = CommentSerializer
+    serializer_class = CommentsSerializerMethod
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsAuthorOrReadOnly

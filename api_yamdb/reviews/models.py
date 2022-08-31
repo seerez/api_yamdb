@@ -1,7 +1,11 @@
-from django.core.validators import validate_slug
+from django.contrib.auth import get_user_model
+from django.core.validators import (MaxValueValidator, MinValueValidator,
+                                    validate_slug)
 from django.db import models
+
 from .validators import check_value_year_valid
-from django.core.validators import MaxValueValidator, MinValueValidator
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -70,24 +74,22 @@ class Title(models.Model):
     def __str__(self):
         return self.name
 
+
 class Review(models.Model):
-    # title = models.ForeignKey(
-    #     'title of the production',
-    #     Titles,
-    #     on_delete=models.CASCADE
-    # )
+    title = models.ForeignKey(
+        Title,
+        on_delete=models.SET_NULL
+    )
     text = models.TextField(
-        'Текст поста',
         help_text='Введите текст поста'
     )
-    # author = models.ForeignKey(
-    #     User,
-    #     on_delete=models.SET_NULL,
-    #     related_name='rewiew',
-    #     verbose_name='Автор'
-    # )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='review',
+        verbose_name='Автор'
+    )
     pub_date = models.DateTimeField(
-        'Дата публикации',
         auto_now_add=True
     )
     score = models.PositiveIntegerField(
@@ -110,14 +112,13 @@ class Comments(models.Model):
         related_name='comments',
         on_delete=models.CASCADE
     )
-    # author = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE,
-    #     related_name='comments',
-    #     verbose_name='Автор'
-    # )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
     text = models.TextField(
-        'Текст комментария',
         help_text='Введите текст комментария'
     )
     created = models.DateTimeField(

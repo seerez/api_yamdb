@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from reviews.models import Category, Genre, Title, Review, Comments
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from reviews.models import Category, Comments, Genre, Review, Title
 
 User = get_user_model()
 
@@ -43,9 +43,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'bio', 'email', 'first_name', 'last_name', 'role', 'username'          
-          
-          
+            'bio', 'email', 'first_name', 'last_name', 'role', 'username'
+        )
+
+
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
