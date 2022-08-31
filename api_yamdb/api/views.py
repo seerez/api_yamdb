@@ -121,8 +121,8 @@ class CategoryViewSet(ListCreateDestroyModelViewSet):
 
 class TitlesViewSet(viewsets.ModelViewSet):
     """Вьюсет для Title."""
-    queryset = (Title.objects.all())
-    queryset = Title.objects.annotate(rating=Avg('reviews__score')).all()
+    #queryset = (Title.objects.all())
+    queryset = Title.objects.annotate(rating=Avg('review__score')).all()
     # permission_classes = (IsAuthenticatedOrReadOnly, AdminAllPermission,)
     pagination_class = TitlesPagination
     filter_backends = (filters.SearchFilter,)

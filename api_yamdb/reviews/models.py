@@ -2,10 +2,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     validate_slug)
 from django.db import models
-
+from users.models import User
 from .validators import check_value_year_valid
-
-User = get_user_model()
 
 
 class Category(models.Model):
@@ -78,14 +76,14 @@ class Title(models.Model):
 class Review(models.Model):
     title = models.ForeignKey(
         Title,
-        on_delete=models.SET_NULL
+        on_delete=models.CASCADE
     )
     text = models.TextField(
         help_text='Введите текст поста'
     )
     author = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='review',
         verbose_name='Автор'
     )
@@ -121,7 +119,7 @@ class Comments(models.Model):
     text = models.TextField(
         help_text='Введите текст комментария'
     )
-    created = models.DateTimeField(
+    pub_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата публикации'
     )
