@@ -67,7 +67,7 @@ class Title(models.Model):
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
-        ordering = ['-year']
+        ordering = ['category', 'name']
 
     def __str__(self):
         return self.name
@@ -102,6 +102,12 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-pub_date']
+        constraints = [
+            models.UniqueConstraint(
+                name="unique_relationships",
+                fields=['author', 'title'],
+            ),
+        ]
 
     def __str__(self):
         return self.text
