@@ -12,7 +12,9 @@ from rest_framework.response import Response
 from reviews.models import Category, Genre, Review, Title, Comments
 
 from .pagination import CategoryPagination, GenrePagination, TitlesPagination
-from .permissions import *
+from .permissions import (AdminOrSuperuserOnly, AuthenticatedOrReadOnly,
+                          AdminOrReadOnly
+                          )
 from .serializers import (CategorySerializer, CommentsSerializerMethod,
                           GenreSerializer, ReviewSerializer, TitlesSerializer,
                           TitlesSerializerMethod, TokenCreateSerializer,
