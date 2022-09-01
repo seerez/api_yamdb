@@ -9,18 +9,14 @@ app_name = 'api'
 
 v1_router = routers.DefaultRouter()
 v1_router.register(
-    'review',
-    ReviewViewSet,
-    basename='review'
-)
-v1_router.register(
-    r'^review/(?P<review_id>\d+)/comments',
+    r'^titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments',
     CommentViewSet,
     basename='comments'
 )
 v1_router.register(
     r'^titles/(?P<title_id>\d+)/reviews',
-    ReviewViewSet
+    ReviewViewSet,
+    basename='review'
 )
 
 v1_router.register(r'users', UserViewSet, basename='users')
