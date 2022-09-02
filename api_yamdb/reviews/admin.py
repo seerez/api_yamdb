@@ -22,6 +22,7 @@ class GenreAdmin(admin.ModelAdmin):
         'slug'
     )
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
