@@ -75,15 +75,14 @@ class UserViewSet(viewsets.ModelViewSet):
     def me(self, request):
         user = self.request.user
         if request.method == 'GET':
-            serializer = UserSerializer(user)
+            serializer = self.get_serializer_class()
             return Response(serializer.data)
-        if request.method == 'PATCH':
-            serializer = UserSerializer(user, data=request.data, partial=True)
-            if serializer.is_valid(raise_exception=True):
-                if serializer.validated_data.get('role'):
-                    serializer.validated_data.pop('role')
-                serializer.save()
-                return Response(serializer.data)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            if serializer.validated_data.get('role'):
+                serializer.validated_data.pop('role')
+            serializer.save()
+            return Response(serializer.data)
 
 
 class ListCreateDestroyModelViewSet(mixins.CreateModelMixin,
@@ -130,7 +129,7 @@ class TitlesViewSet(viewsets.ModelViewSet):
     filterset_class = TitleFilter
 
     def get_serializer_class(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ('list', 'retrieve'):
             return TitlesSerializer
         return TitlesSerializerMethod
 
@@ -165,9 +164,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
-        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
-        return Comments.objects.filter(title=title, review=review).all()
+        return Comments.objects.filter(
+            title=get_object_or_404(
+                Title, pk=self.kwargs.get('title_id')),
+            review=get_object_or_404(
+                Review, pk=self.kwargs.get('review_id'))
+        ).all()
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))

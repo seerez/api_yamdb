@@ -19,7 +19,7 @@ v1_router.register(
     basename='review'
 )
 
-v1_router.register(r'users', UserViewSet, basename='users')
+v1_router.register('users', UserViewSet, basename='users')
 v1_router.register('genres', GenreViewSet, basename='genres')
 v1_router.register('categories', CategoryViewSet, basename='categories')
 v1_router.register('titles', TitlesViewSet, basename='titles')

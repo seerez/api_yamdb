@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import Category, Genre, Title
 
 
+@admin.register(Title)
 class TitlesAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
@@ -14,20 +15,16 @@ class TitlesAdmin(admin.ModelAdmin):
     filter_horizontal = ('genre',)
 
 
+@admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'slug'
     )
 
-
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'slug'
     )
-
-
-admin.site.register(Genre, GenreAdmin)
-admin.site.register(Title, TitlesAdmin)
-admin.site.register(Category, CategoryAdmin)

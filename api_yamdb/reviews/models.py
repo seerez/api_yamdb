@@ -57,7 +57,7 @@ class Title(models.Model):
         verbose_name='Жанр'
     )
     description = models.TextField(null=True, blank=True)
-    year = models.IntegerField(
+    year = models.PositiveSmallIntegerField(
         blank=False,
         null=False,
         validators=[check_value_year_valid],
@@ -92,7 +92,7 @@ class Review(models.Model):
     pub_date = models.DateTimeField(
         auto_now_add=True
     )
-    score = models.PositiveIntegerField(
+    score = models.PositiveSmallIntegerField(
         validators=[
             MinValueValidator(1, 'Не меньше 1'),
             MaxValueValidator(10, 'Не больше 10')
@@ -142,5 +142,5 @@ class Comments(models.Model):
     )
 
     class Meta:
-        ordering = ('-pub_date',)
+        ordering = ['-pub_date']
         verbose_name_plural = 'Комментарии'

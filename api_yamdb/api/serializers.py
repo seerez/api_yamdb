@@ -35,7 +35,7 @@ class TokenCreateSerializer(serializers.Serializer):
     def validate(self, data):
         user = get_object_or_404(User, username=data['username'])
         if user.confirmation_code != data['confirmation_code']:
-            raise serializers.ValidationError('Wrong confirmation_code')
+            raise serializers.ValidationError('Неверный код подтверждения')
         return RefreshToken.for_user(user).access_token
 
 
