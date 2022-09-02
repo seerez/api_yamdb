@@ -75,14 +75,14 @@ class UserViewSet(viewsets.ModelViewSet):
     def me(self, request):
         user = self.request.user
         if request.method == 'GET':
-            serializer = self.get_serializer_class()
+            serializer = UserSerializer(request.user)
             return Response(serializer.data)
         serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            if serializer.validated_data.get('role'):
-                serializer.validated_data.pop('role')
-            serializer.save()
-            return Response(serializer.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.validated_data.get('role'):
+            serializer.validated_data.pop('role')
+        serializer.save()
+        return Response(serializer.data)
 
 
 class ListCreateDestroyModelViewSet(mixins.CreateModelMixin,
